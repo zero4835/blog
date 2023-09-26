@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+
 
 const Login = () => {
   return (
@@ -7,7 +9,9 @@ const Login = () => {
       <form>
         <input type="text" placeholder='username'/>
         <input type="password" placeholder='password'/>
-        <button>Login</button>
+        <button >Login</button>
+        <p>username or password Error!</p>
+        <span> Don't you have an account? <Link to='/register'>Register</Link></span>
       </form>
     </div>
   )
