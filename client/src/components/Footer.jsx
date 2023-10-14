@@ -1,11 +1,14 @@
-import React from 'react'
+import React from "react";
 
 const Footer = () => {
   return (
-    <div>
-      Footer
-    </div>
-  )
-}
+    <footer>
+      <img src={"./images/black-cat.png"} alt="Logo" />
+      <span>
+        Use <b>React</b> and <b>Express.js</b>
+      </span>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
