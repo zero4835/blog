@@ -1,10 +1,10 @@
 import React from "react";
+import Logo from '../images/black-cat.png'
 
 const Footer = () => {
   return (
     <footer>
-      {/* img src should be use / not ./ */}
-      <img src={"/images/black-cat.png"} alt="Logo" />
+      <img src={Logo} alt="Logo" />
       <span>
         Use <b>React</b> and <b>Express.js</b>
       </span>

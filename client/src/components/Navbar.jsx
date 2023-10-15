@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Logo from '../images/black-cat.png'
 
 const Navbar = () => {
   return (
     <div className="navbar">
       <div className="container">
         <div className="logo">
-          {/* img src should be use / not ./ */}
-          <img src="/images/black-cat.png" alt="dog"></img>
+          <img src={Logo} alt="dog"></img>
         </div>
         <div className="links">
           <Link className="link" to="https://www.facebook.com/">
