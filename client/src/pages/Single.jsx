@@ -1,47 +1,59 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState, useContext} from "react";
+import { Link, useLocation } from "react-router-dom";
 import Edit from "../images/edit.png";
 import Delete from "../images/delete.png";
 import Menu from "../components/Menu";
+import axios from "axios"
+import moment from "moment"
+import { AuthContext } from "../context/authContext";
 
 const Single = () => {
+  const [post, setPost] = useState({});
+
+  const location = useLocation()
+  const postId = location.pathname.split("/")[2]
+
+  const {currentUser} = useContext(AuthContext)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/posts/${postId}`);
+        setPost(res.data);
+        console.log(post)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, [postId]);
+
   return (
     <div className="single">
       <div className="content">
         <img
-          src={require("../images/cosmic-starry-background-a5981f4750d983aee2a07460542f5df1.png")}
+          // src={require(post?.img)}
+          src={post?.img}
         />
         <div className="user">
           <img
             src={require("../images/cat-pusheen-kitten-cuteness-cat-84ad5e290be0a860307dfe791875f57e.png")}
           />
           <div className="info">
-            <span>Natsusaka cat</span>
-            <p>Posted 1 days ago</p>
+            <span>{post.username}</span>
+            <p>Posted {moment(post.date).fromNow()}</p>
           </div>
-          <div>
+          {currentUser && currentUser.username === post.username && (<div className="edit">
             <Link to={`/write?edit=2`}>
               <img src={Edit} />
             </Link>
             <img src={Delete} />
-          </div>
+          </div>)}
         </div>
-        <h1>Lorem ipsum dolor, sit amet consectetur adipisicing elit</h1>
+        <h1>{post.title}</h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio
-          repudiandae enim quidem, nihil nesciunt, rerum sint fuga, libero
-          doloribus dolores deleniti soluta exercitationem accusamus voluptates
-          obcaecati minus esse reiciendis delectus? <br />
-          <br />
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla ut
-          quas optio numquam, quo cum totam a quasi officia! Nulla provident
-          dolore consequuntur, deserunt vel quis sit quibusdam laborum ipsa.{" "}
-          <br />
-          <br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-          doloribus eum atque quia laborum eius recusandae! Recusandae tempora,
-          corporis, at quidem perferendis, cumque consequatur sint libero
-          temporibus eos optio quae.
+          {post.desc}
         </p>
       </div>
       <Menu />
