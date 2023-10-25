@@ -12,6 +12,10 @@ node_modules
 #Server
 /server
 
+# config file
+/package.json
+/package-lock.json
+
 #DB info
 /api/db.js
 
