@@ -1,4 +1,5 @@
 import { db } from "../db.js";
+import Jwt from "jsonwebtoken";
 
 export const getPosts = (req, res) => {
   const q = req.query.cat
@@ -27,7 +28,20 @@ export const addPost = (req, res) => {
   res.json("from controller");
 };
 export const deletePost = (req, res) => {
-  res.json("from controller");
+  const token = req.cookies.access_token;
+  if (!token) return res.status(401).json("Not authenticated!");
+
+  Jwt.verify(token, "jwtkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!");
+
+    const postId = req.params.id;
+    const q = "DELETE FROM posts WHERE `id` = ? AND `uid` = ? ";
+
+    db.query(q, [postId, userInfo.id], (err, data) => {
+      if (err) return res.status(403).json("You can delete only your post")
+      return res.json("Posthas been deleted!")
+    });
+  });
 };
 export const updatePost = (req, res) => {
   res.json("from controller");
