@@ -1,10 +1,11 @@
-import { Children, createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
+    // If a user is setCurrentUser, it's not null
     JSON.parse(localStorage.getItem("user")) || null
   );
 

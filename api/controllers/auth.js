@@ -41,21 +41,30 @@ export const login = (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json("Wrong username or password");
 
+    // Sign a JWT token with the user's ID and a secret key
     const token = jwt.sign({ id: data[0].id }, "jwtkey");
+
+    // Create a new object 'other' by destructuring 'data[0]' to exclude the 'password' property
     const { password, ...other } = data[0];
 
+    // Set an HTTP-only cookie named "access_token" with the JWT token for secure user authentication
     res
       .cookie("access_token", token, {
         httpOnly: true,
       })
+      // Set the HTTP response status to 200 (OK) to indicate a successful login
       .status(200)
+      // Send the user's data as a JSON response to the client
       .json(data[0]);
   });
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("access_token",{
-    sameSite:"none",
-    secure:true
-  }).status(200).json("User has been logged out.")
+  res
+    .clearCookie("access_token", {
+      sameSite: "none",
+      secure: true,
+    })
+    .status(200)
+    .json("User has been logged out.");
 };
