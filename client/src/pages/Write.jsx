@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import moment from "moment";
 
 const Write = () => {
-  const [value, setValue] = useState("");
-  const [title, setTitle] = useState("");
+  const state = useLocation().state;
+  const [value, setValue] = useState(state?.title || "");
+  const [title, setTitle] = useState(state?.desc || "");
   const [file, setFile] = useState(null);
-  const [cat, setCat] = useState("");
+  const [cat, setCat] = useState(state?.cat || "");
 
   const upload = async () => {
     try {
@@ -23,6 +26,25 @@ const Write = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     const imgUrl = upload();
+
+    try {
+      state
+        ? await axios.put(`/posts/${state.id}`, {
+            title,
+            desc: value,
+            cat,
+            img: file ? imgUrl : "",
+          })
+        : await axios.post(`/posts/`, {
+            title,
+            desc: value,
+            cat,
+            img: file ? imgUrl : "",
+            date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
+          });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -31,6 +53,7 @@ const Write = () => {
         <input
           type="text"
           placeholder="Title"
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="editorContainer">
@@ -71,6 +94,7 @@ const Write = () => {
           <div className="cat">
             <input
               type="radio"
+              checked={cat === "art"}
               name="cat"
               value="art"
               id="art"
@@ -81,6 +105,7 @@ const Write = () => {
           <div className="cat">
             <input
               type="radio"
+              checked={cat === "science"}
               name="cat"
               value="science"
               id="science"
@@ -91,6 +116,7 @@ const Write = () => {
           <div className="cat">
             <input
               type="radio"
+              checked={cat === "technology"}
               name="cat"
               value="technology"
               id="technology"
@@ -101,6 +127,7 @@ const Write = () => {
           <div className="cat">
             <input
               type="radio"
+              checked={cat === "cenima"}
               name="cat"
               value="cenima"
               id="cenima"
@@ -111,6 +138,7 @@ const Write = () => {
           <div className="cat">
             <input
               type="radio"
+              checked={cat === "design"}
               name="cat"
               value="design"
               id="design"
@@ -121,6 +149,7 @@ const Write = () => {
           <div className="cat">
             <input
               type="radio"
+              checked={cat === "food"}
               name="cat"
               value="food"
               id="food"
