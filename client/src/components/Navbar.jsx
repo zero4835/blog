@@ -30,7 +30,7 @@ const Navbar = () => {
           <Link className="link" to="/?cat=science">
             <h6>SCIENCE</h6>
           </Link>
-          <Link className="link" to="/?cat=techology">
+          <Link className="link" to="/?cat=technology">
             <h6>TECHNOLOGY</h6>
           </Link>
           <Link className="link" to="/?cat=cinema">
