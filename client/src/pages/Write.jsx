@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 
 const Write = () => {
+
+  const navigate = useNavigate()
   const state = useLocation().state;
   const [value, setValue] = useState(state?.title || "");
   const [title, setTitle] = useState(state?.desc || "");
@@ -25,7 +27,7 @@ const Write = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const imgUrl = upload();
+    const imgUrl = await upload();
 
     try {
       state
@@ -42,10 +44,17 @@ const Write = () => {
             img: file ? imgUrl : "",
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
           });
+
+          navigate("/")
     } catch (err) {
       console.log(err);
     }
   };
+
+  const getText = (html) =>{
+    const doc = new DOMParser().parseFromString(html, "text/html")
+    return doc.body.textContent
+  }
 
   return (
     <div className="add">
@@ -53,7 +62,7 @@ const Write = () => {
         <input
           type="text"
           placeholder="Title"
-          value={title}
+          value={getText(title)}
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="editorContainer">
@@ -127,13 +136,13 @@ const Write = () => {
           <div className="cat">
             <input
               type="radio"
-              checked={cat === "cenima"}
+              checked={cat === "cinema"}
               name="cat"
-              value="cenima"
-              id="cenima"
+              value="cinema"
+              id="cinema"
               onChange={(e) => setCat(e.target.value)}
             />
-            <label htmlFor="cenima">Cenima</label>
+            <label htmlFor="cenima">Cinema</label>
           </div>
           <div className="cat">
             <input
