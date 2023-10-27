@@ -26,6 +26,11 @@ const Single = () => {
     }
   }
 
+  const getText = (html) =>{
+    const doc = new DOMParser().parseFromString(html, "text/html")
+    return doc.body.textContent
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,7 +50,7 @@ const Single = () => {
       <div className="content">
         <img
           // src={require(post?.img)}
-          src={post?.img}
+          src={`../upload/${post?.img}`}
         />
         <div className="user">
           <img
@@ -64,7 +69,7 @@ const Single = () => {
         </div>
         <h1>{post.title}</h1>
         <p>
-          {post.desc}
+          {getText(post.desc)}
         </p>
       </div>
       <Menu cat={post.cat}/>
